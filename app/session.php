@@ -7,17 +7,13 @@ function start_app_session(): void
         return;
     }
 
-    $sessionPath = dirname(__DIR__) . '/storage/sessions';
-    if (!is_dir($sessionPath)) {
-        mkdir($sessionPath, 0777, true);
-    }
+
 
     // Set secure session parameters before starting
     ini_set('session.cookie_httponly', '1');
     ini_set('session.use_only_cookies', '1');
     ini_set('session.cookie_samesite', 'Strict');
 
-    session_save_path($sessionPath);
     session_start();
 
     // 1. Session Timeout (20 minutes)
