@@ -1,0 +1,33 @@
+# 1. Deshabilitar listado de directorios
+Options -Indexes
+
+# 2. Bloquear acceso a carpetas sensibles del sistema
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(app|database|storage|fpdf)(/.*)?$ - [F,L]
+</IfModule>
+
+# 3. Bloquear acceso a archivos sensibles por extensión
+<FilesMatch "\.(env|sql|log|ini|sh|bak|swp|md|json)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# 4. Bloquear acceso a archivos y carpetas ocultas (ej. .git)
+<FilesMatch "^\.">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# 5. Ocultar la firma del servidor y la versión de PHP (si está permitido)
+ServerSignature Off
